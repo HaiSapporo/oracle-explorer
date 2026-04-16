@@ -66,28 +66,28 @@
                     <div class="header-bottom-row">
                         <div class="filter-section">
                             <div class="filter-group">
-                                <span class="filter-label">対象:</span>
-                                <label class="checkbox-label">
+                                <span class="filter-label">対象 <small style="font-weight: normal; font-size: 0.75rem; color: var(--text-muted);">(検索範囲)</small>:</span>
+                                <label class="checkbox-label" title="テーブルそのものの名前（物理名・論理名）を検索対象にします">
                                     <input type="checkbox" id="chkTable" checked>
                                     <span class="checkbox-custom">テーブル</span>
                                 </label>
-                                <label class="checkbox-label">
+                                <label class="checkbox-label" title="テーブル内にある各列（フィールド）の名前や備考を検索対象にします">
                                     <input type="checkbox" id="chkField" checked>
                                     <span class="checkbox-custom">フィールド</span>
                                 </label>
                             </div>
                             <div class="filter-group delimiter"></div>
                             <div class="filter-group">
-                                <span class="filter-label">項目:</span>
-                                <label class="checkbox-label">
+                                <span class="filter-label">項目 <small style="font-weight: normal; font-size: 0.75rem; color: var(--text-muted);">(検索条件)</small>:</span>
+                                <label class="checkbox-label" title="データベース上の実際の列名・テーブル名 (例: user_id)">
                                     <input type="checkbox" id="chkPhysical" checked>
                                     <span class="checkbox-custom">物理名 (Physical)</span>
                                 </label>
-                                <label class="checkbox-label">
+                                <label class="checkbox-label" title="設計書上の日本語名 (例: ユーザーID)">
                                     <input type="checkbox" id="chkLogical" checked>
                                     <span class="checkbox-custom">論理名 (Logical)</span>
                                 </label>
-                                <label class="checkbox-label">
+                                <label class="checkbox-label" title="備考欄に記載されている説明文">
                                     <input type="checkbox" id="chkRemark" checked>
                                     <span class="checkbox-custom">備考 (Remark)</span>
                                 </label>
