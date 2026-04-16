@@ -349,7 +349,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            if (res.matchingColumns.length > 0) {
+            if (res.tableMatches) {
+                // Render full table directly inline
+                html += `
+                    <div class="data-table-container glass-panel" style="margin-top: 16px; cursor: default;" onclick="event.stopPropagation();">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th width="40">No.</th>
+                                    <th>物理名 (Physical)</th>
+                                    <th>論理名 (Logical)</th>
+                                    <th width="180">データ型 (Type)</th>
+                                    <th width="100">必須</th>
+                                    <th width="100">デフォルト</th>
+                                    <th>備考 (Remark)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                res.table.columns.forEach(col => {
+                    let notNullHtml = '';
+                    if (col.notNull.toLowerCase().includes('pk')) {
+                        notNullHtml = '<span class="badge pk">PK</span>';
+                    } else if (col.notNull.toLowerCase().includes('yes')) {
+                        notNullHtml = '<span class="badge not-null">NOT NULL</span>';
+                    }
+                    html += `
+                        <tr>
+                            <td>${col.no || ''}</td>
+                            <td class="td-mono">${chkPhysical ? createHighlight(col.physicalName, query) : col.physicalName}</td>
+                            <td>${chkLogical ? createHighlight(col.logicalName, query) : col.logicalName}</td>
+                            <td class="td-mono">${col.dataType || ''}</td>
+                            <td>${notNullHtml}</td>
+                            <td class="td-mono">${col.default || ''}</td>
+                            <td>${chkRemark ? createHighlight(col.remark, query) : col.remark}</td>
+                        </tr>
+                    `;
+                });
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else if (res.matchingColumns.length > 0) {
                 html += `<div class="result-matches">`;
                 
                 const limit = (!searchTable && chkField.checked) ? 100 : 5;
@@ -376,8 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 html += `</div>`;
-            } else if (res.tableMatches && res.table.columns.length > 0) {
-                html += `<div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 8px;">このテーブルには ${res.table.columns.length} 個の列があります</div>`;
             }
 
             card.innerHTML = html;
