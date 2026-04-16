@@ -21,7 +21,7 @@ def parse_html(filepath):
     
     # Try to extract the display name (Logical Name)
     table_logical_name = ''
-    logical_match = re.search(r'<th>System Name</th>\s*<td>(.*?)</td>', content, re.IGNORECASE)
+    logical_match = re.search(r'<th>(?:System Name|システム名|論理名|Logical Name)</th>\s*<td>(.*?)</td>', content, re.IGNORECASE)
     if logical_match:
         table_logical_name = clean_text(logical_match.group(1))
 
@@ -36,7 +36,7 @@ def parse_html(filepath):
             display_title = title
     
     # Extract columns
-    col_table_match = re.search(r'<caption>Column info</caption>(.*?)</table>', content, re.DOTALL | re.IGNORECASE)
+    col_table_match = re.search(r'<caption>(?:Column info|カラム情報|.*カラム.*|.*Column.*?)</caption>(.*?)</table>', content, re.DOTALL | re.IGNORECASE)
     
     columns = []
     if col_table_match:
