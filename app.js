@@ -329,6 +329,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const searchTable = chkTable.checked;
+        const searchPhysical = chkPhysical.checked;
+        const searchLogical = chkLogical.checked;
+        const searchRemark = chkRemark.checked;
 
         results.forEach(res => {
             const card = document.createElement('div');
@@ -377,12 +380,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     html += `
                         <tr>
                             <td>${col.no || ''}</td>
-                            <td class="td-mono">${chkPhysical ? createHighlight(col.physicalName, query) : col.physicalName}</td>
-                            <td>${chkLogical ? createHighlight(col.logicalName, query) : col.logicalName}</td>
+                            <td class="td-mono">${searchPhysical ? createHighlight(col.physicalName, query) : col.physicalName}</td>
+                            <td>${searchLogical ? createHighlight(col.logicalName, query) : col.logicalName}</td>
                             <td class="td-mono">${col.dataType || ''}</td>
                             <td>${notNullHtml}</td>
                             <td class="td-mono">${col.default || ''}</td>
-                            <td>${chkRemark ? createHighlight(col.remark, query) : col.remark}</td>
+                            <td>${searchRemark ? createHighlight(col.remark, query) : col.remark}</td>
                         </tr>
                     `;
                 });
@@ -405,9 +408,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span>TYPE: ${col.dataType}</span>
                             </div>
                             <div class="match-row-content">
-                                <span class="td-mono">${chkPhysical ? createHighlight(col.physicalName, query) : col.physicalName}</span>
-                                <span style="color: var(--text-secondary);">${chkLogical ? createHighlight(col.logicalName, query) : col.logicalName}</span>
-                                <span>${chkRemark ? createHighlight(col.remark, query) : col.remark}</span>
+                                <span class="td-mono">${searchPhysical ? createHighlight(col.physicalName, query) : col.physicalName}</span>
+                                <span style="color: var(--text-secondary);">${searchLogical ? createHighlight(col.logicalName, query) : col.logicalName}</span>
+                                <span>${searchRemark ? createHighlight(col.remark, query) : col.remark}</span>
                             </div>
                         </div>
                     `;
