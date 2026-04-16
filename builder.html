@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Compiler - Browser Based</title>
+    <style>
+        :root {
+            --bg-base: #0f1115;
+            --bg-surface: #1a1d24;
+            --text-primary: #f0f2f5;
+            --text-secondary: #9da3ad;
+            --accent-color: #4f46e5;
+            --accent-hover: #6366f1;
+            --border-color: #2e323a;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--bg-surface);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        h1 { margin-top: 0; font-size: 1.5rem; }
+        
+        .description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 40px 20px;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent-color);
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .upload-icon {
+            color: var(--accent-color);
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 1rem;
+            pointer-events: none; /* Let the label trigger input */
+        }
+
+        .status {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 6px;
+            background-color: rgba(0,0,0,0.2);
+            font-family: monospace;
+            text-align: left;
+            font-size: 0.85rem;
+            color: #a7f3d0;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>[No-Python] Data.js 生成ツール</h1>
+        <p class="description">
+            Pythonや外部ツールは一切不要です。<br>
+            ブラウザで直接 <code>tables</code> フォルダを選択するだけで、数秒で <code>data.txt</code> に変換してダウンロードします。
+        </p>
+
+        <div class="upload-area">
+            <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <h3 style="margin-bottom: 8px;">クリックして tables フォルダを選択</h3>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0;">※サーバーには何も送信されません (100% オフライン実行)</p>
+            <!-- allow user to choose directory -->
+            <input type="file" id="dirInput" class="file-input" webkitdirectory directory multiple>
+        </div>
+
+        <div class="status" id="statusLog"></div>
+    </div>
+
+    <script>
+        document.getElementById('dirInput').addEventListener('change', async function(e) {
+            const files = e.target.files;
+            if (files.length === 0) return;
+
+            const statusLog = document.getElementById('statusLog');
+            statusLog.style.display = 'block';
+            statusLog.innerHTML = `スキャン開始中... ${files.length} ファイルが見つかりました。<br>`;
+            
+            const parser = new DOMParser();
+            let schema = [];
+            let errorCount = 0;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.name.endsWith('.html')) continue;
+
+                try {
+                    const text = await file.text();
+                    const doc = parser.parseFromString(text, 'text/html');
+                    
+                    let logicalName = '';
+                    const ths = doc.querySelectorAll('th');
+                    for (let th of ths) {
+                        if (th.textContent.trim() === 'System Name') {
+                            const td = th.nextElementSibling;
+                            if (td && td.tagName.toLowerCase() === 'td') {
+                                logicalName = td.textContent.trim();
+                                break;
+                            }
+                        }
+                    }
+                    
+                    let tableName = file.name.replace('.html', '');
+                    const caption = doc.querySelector('.tableinfo-caption td:last-child');
+                    if (caption) {
+                        let title = caption.textContent.trim().replace(' . ', '.');
+                        if (title) tableName = title;
+                    }
+                    
+                    let columns = [];
+                    const htmlCaptions = doc.querySelectorAll('caption');
+                    let colCaption = null;
+                    for (let c of htmlCaptions) {
+                        if (c.textContent.trim() === 'Column info') { 
+                            colCaption = c; 
+                            break; 
+                        }
+                    }
+                    
+                    if (colCaption) {
+                        const trs = colCaption.parentElement.querySelectorAll('tr');
+                        trs.forEach(tr => {
+                            if (tr.querySelector('th')) return;
+                            const tds = tr.querySelectorAll('td');
+                            if (tds.length >= 7) {
+                                columns.push({
+                                    no: tds[0].textContent.replace(/\s+/g,' ').trim(),
+                                    logicalName: tds[1].textContent.replace(/\s+/g,' ').trim(),
+                                    physicalName: tds[2].textContent.replace(/\s+/g,' ').trim(),
+                                    dataType: tds[3].textContent.replace(/\s+/g,' ').trim(),
+                                    notNull: tds[4].textContent.replace(/\s+/g,' ').trim(),
+                                    default: tds[5].textContent.replace(/\s+/g,' ').trim(),
+                                    remark: tds[6].textContent.replace(/\s+/g,' ').trim()
+                                });
+                            }
+                        });
+                    }
+                    
+                    schema.push({
+                        tableName: tableName,
+                        logicalName: logicalName,
+                        columns: columns
+                    });
+                    
+                } catch (err) {
+                    errorCount++;
+                    console.error("Error parsing " + file.name, err);
+                }
+            }
+            
+            // Sort tables alphabetically
+            schema.sort((a,b) => a.tableName.localeCompare(b.tableName));
+            
+            statusLog.innerHTML += `成功: ${schema.length} 個のテーブルデータを抽出しました。<br>`;
+            if (errorCount > 0) statusLog.innerHTML += `<span style="color: #fca5a5;">エラー: ${errorCount} 個のファイルで解析に失敗しました。</span><br>`;
+            
+            statusLog.innerHTML += `data.txt ファイルの生成とダウンロードを準備しています...<br>`;
+
+            // Write to Blob and Download
+            try {
+                const content = `const DB_SCHEMA = ${JSON.stringify(schema, null, 2)};\n`;
+                const blob = new Blob([content], {type: 'application/javascript;charset=utf-8'});
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'data.txt';
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    statusLog.innerHTML += `<strong style="color: white;">✅ ダウンロード完了！ 生成された data.txt を元のフォルダに保存して (advanced_search.html) を開いてください。</strong>`;
+                }, 100);
+            } catch (err) {
+                statusLog.innerHTML += `<span style="color: #fca5a5;">保存エラー: ${err.message}</span><br>`;
+            }
+        });
+    </script>
+</body>
+</html>

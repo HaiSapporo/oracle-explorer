@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+		<title>Table&#32;Definition&#32;Document</title>
+		<link rel="stylesheet" href="a5m2.css">
+	</head>
+	<body>
+	<div class="tableinfo-caption" style="width: 912px;">
+		<table>
+			<colgroup>
+				<col width="300">
+				<col width="300">
+			</colgroup>
+			<tr>
+			<th></th>
+			<td>public . _prisma_migrations</td>
+			</tr>
+		</table>
+	</div>
+	<div class="tableinfo-caption-stuffing"></div>
+
+	<table>
+		<caption>Table info</caption>
+			<colgroup>
+				<col width="150">
+				<col width="305">
+				<col width="150">
+				<col width="305">
+			</colgroup>
+			<th>System Name</th>
+			<td></td>
+			<th>Author</th>
+			<td>PHAN&#32;HI</td>
+		</tr>
+		<tr>
+			<th>Sub-system Name</th>
+			<td></td>
+			<th>Created On</th>
+			<td>4/16/2026</td>
+		</tr>
+		<tr>
+			<th>RDBMS</th>
+			<td colspan="3">PostgreSQL 17.6 on x86_64-windows, compiled by msvc-19.44.35213, 64-bit 17.6</td>
+		</tr>
+		<tr>
+			<td colspan="4"><b>Remark</b><br></td>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>Column info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="200">
+				<col width="80">
+				<col width="120">
+				<col width="140">
+			</colgroup>
+		<tr>
+			<th>No</th>
+			<th>Logical Name</th>
+			<th>Physical Name</th>
+			<th>Data Type</th>
+			<th>Not Null</th>
+			<th>Default</th>
+			<th>Remark</th>
+		</tr>
+		<tr>
+			<td class="number-format">1</td>
+			<td></td>
+			<td>id</td>
+			<td>character&#32;varying(36)</td>
+			<td>Yes (PK)</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">2</td>
+			<td></td>
+			<td>checksum</td>
+			<td>character&#32;varying(64)</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">3</td>
+			<td></td>
+			<td>finished_at</td>
+			<td>timestamp(6)&#32;with&#32;time&#32;zone</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">4</td>
+			<td></td>
+			<td>migration_name</td>
+			<td>character&#32;varying(255)</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">5</td>
+			<td></td>
+			<td>logs</td>
+			<td>text</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">6</td>
+			<td></td>
+			<td>rolled_back_at</td>
+			<td>timestamp(6)&#32;with&#32;time&#32;zone</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">7</td>
+			<td></td>
+			<td>started_at</td>
+			<td>timestamp(6)&#32;with&#32;time&#32;zone</td>
+			<td>Yes</td>
+			<td>now()</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">8</td>
+			<td></td>
+			<td>applied_steps_count</td>
+			<td>integer</td>
+			<td>Yes</td>
+			<td>0</td>
+			<td></td>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>Index info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="70">
+				<col width="470">
+			</colgroup>
+		<tr>
+			<th>No</th>
+			<th>Index Name</th>
+			<th>Column List</th>
+			<th>Unique</th>
+			<th>Option</th>
+		</tr>
+		<tr>
+			<td class="number-format">1</td>
+			<td>_prisma_migrations_pkey</td>
+			<td>id</td>
+			<td>Yes</td>
+			<td></td>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>Constraint info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="540">
+			</colgroup>
+		<tr>
+			<th>No</th>
+			<th>Constraint info</th>
+			<th>Type</th>
+			<th>Constraint Definition</th>
+		</tr>
+		<tr>
+			<td class="number-format">1</td>
+			<td>16690_16691_1_not_null</td>
+			<td>CHECK</td>
+			<td>id&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">2</td>
+			<td>16690_16691_2_not_null</td>
+			<td>CHECK</td>
+			<td>checksum&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">3</td>
+			<td>16690_16691_4_not_null</td>
+			<td>CHECK</td>
+			<td>migration_name&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">4</td>
+			<td>16690_16691_7_not_null</td>
+			<td>CHECK</td>
+			<td>started_at&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">5</td>
+			<td>16690_16691_8_not_null</td>
+			<td>CHECK</td>
+			<td>applied_steps_count&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">6</td>
+			<td>_prisma_migrations_pkey</td>
+			<td>PRIMARY&#32;KEY</td>
+			<td>id</td>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>FK info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="100">
+				<col width="100">
+			</colgroup>
+			<th>No</th>
+			<th>FK Name</th>
+			<th>Column List</th>
+			<th>Reference Source</th>
+			<th>Reference Column List</th>
+			<th>ON DELETE</th>
+			<th>ON UPDATE</th>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>FK info (PK Side)</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="100">
+				<col width="100">
+			</colgroup>
+		<tr>
+			<th>No</th>
+			<th>FK Name</th>
+			<th>Column List</th>
+			<th>Reference Source</th>
+			<th>Reference Source Column List</th>
+			<th>ON DELETE</th>
+			<th>ON UPDATE</th>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>Trigger info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="370">
+			</colgroup>
+			<th>No</th>
+			<th>Trigger Name</th>
+			<th>Event</th>
+			<th>Timing</th>
+			<th>Conditions</th>
+		</tr>
+	</table>
+
+
+	</body>
+</html>

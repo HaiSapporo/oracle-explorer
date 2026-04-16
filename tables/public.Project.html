@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+		<title>Table&#32;Definition&#32;Document</title>
+		<link rel="stylesheet" href="a5m2.css">
+	</head>
+	<body>
+	<div class="tableinfo-caption" style="width: 912px;">
+		<table>
+			<colgroup>
+				<col width="300">
+				<col width="300">
+			</colgroup>
+			<tr>
+			<th></th>
+			<td>public . Project</td>
+			</tr>
+		</table>
+	</div>
+	<div class="tableinfo-caption-stuffing"></div>
+
+	<table>
+		<caption>Table info</caption>
+			<colgroup>
+				<col width="150">
+				<col width="305">
+				<col width="150">
+				<col width="305">
+			</colgroup>
+			<th>System Name</th>
+			<td></td>
+			<th>Author</th>
+			<td>PHAN&#32;HI</td>
+		</tr>
+		<tr>
+			<th>Sub-system Name</th>
+			<td></td>
+			<th>Created On</th>
+			<td>4/16/2026</td>
+		</tr>
+		<tr>
+			<th>RDBMS</th>
+			<td colspan="3">PostgreSQL 17.6 on x86_64-windows, compiled by msvc-19.44.35213, 64-bit 17.6</td>
+		</tr>
+		<tr>
+			<td colspan="4"><b>Remark</b><br></td>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>Column info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="200">
+				<col width="80">
+				<col width="120">
+				<col width="140">
+			</colgroup>
+		<tr>
+			<th>No</th>
+			<th>Logical Name</th>
+			<th>Physical Name</th>
+			<th>Data Type</th>
+			<th>Not Null</th>
+			<th>Default</th>
+			<th>Remark</th>
+		</tr>
+		<tr>
+			<td class="number-format">1</td>
+			<td></td>
+			<td>id</td>
+			<td>text</td>
+			<td>Yes (PK)</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">2</td>
+			<td></td>
+			<td>userId</td>
+			<td>text</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">3</td>
+			<td></td>
+			<td>title</td>
+			<td>text</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">4</td>
+			<td></td>
+			<td>videoPath</td>
+			<td>text</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">5</td>
+			<td></td>
+			<td>audioPath</td>
+			<td>text</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">6</td>
+			<td></td>
+			<td>captionData</td>
+			<td>text</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">7</td>
+			<td></td>
+			<td>bookmarks</td>
+			<td>text</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">8</td>
+			<td></td>
+			<td>duration</td>
+			<td>integer</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">9</td>
+			<td></td>
+			<td>thumbnailUrl</td>
+			<td>text</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">10</td>
+			<td></td>
+			<td>createdAt</td>
+			<td>timestamp(3)&#32;without&#32;time&#32;zone</td>
+			<td>Yes</td>
+			<td>CURRENT_TIMESTAMP</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">11</td>
+			<td></td>
+			<td>updatedAt</td>
+			<td>timestamp(3)&#32;without&#32;time&#32;zone</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>Index info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="70">
+				<col width="470">
+			</colgroup>
+		<tr>
+			<th>No</th>
+			<th>Index Name</th>
+			<th>Column List</th>
+			<th>Unique</th>
+			<th>Option</th>
+		</tr>
+		<tr>
+			<td class="number-format">1</td>
+			<td>Project_pkey</td>
+			<td>id</td>
+			<td>Yes</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="number-format">2</td>
+			<td>Project_userId_createdAt_idx</td>
+			<td>userId,createdAt</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>Constraint info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="540">
+			</colgroup>
+		<tr>
+			<th>No</th>
+			<th>Constraint info</th>
+			<th>Type</th>
+			<th>Constraint Definition</th>
+		</tr>
+		<tr>
+			<td class="number-format">1</td>
+			<td>16690_16735_10_not_null</td>
+			<td>CHECK</td>
+			<td>createdAt&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">2</td>
+			<td>16690_16735_11_not_null</td>
+			<td>CHECK</td>
+			<td>updatedAt&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">3</td>
+			<td>16690_16735_1_not_null</td>
+			<td>CHECK</td>
+			<td>id&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">4</td>
+			<td>16690_16735_2_not_null</td>
+			<td>CHECK</td>
+			<td>userId&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">5</td>
+			<td>16690_16735_3_not_null</td>
+			<td>CHECK</td>
+			<td>title&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">6</td>
+			<td>16690_16735_4_not_null</td>
+			<td>CHECK</td>
+			<td>videoPath&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">7</td>
+			<td>16690_16735_6_not_null</td>
+			<td>CHECK</td>
+			<td>captionData&#32;IS&#32;NOT&#32;NULL</td>
+		</tr>
+		<tr>
+			<td class="number-format">8</td>
+			<td>Project_pkey</td>
+			<td>PRIMARY&#32;KEY</td>
+			<td>id</td>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>FK info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="100">
+				<col width="100">
+			</colgroup>
+			<th>No</th>
+			<th>FK Name</th>
+			<th>Column List</th>
+			<th>Reference Source</th>
+			<th>Reference Column List</th>
+			<th>ON DELETE</th>
+			<th>ON UPDATE</th>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>FK info (PK Side)</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="100">
+				<col width="100">
+			</colgroup>
+		<tr>
+			<th>No</th>
+			<th>FK Name</th>
+			<th>Column List</th>
+			<th>Reference Source</th>
+			<th>Reference Source Column List</th>
+			<th>ON DELETE</th>
+			<th>ON UPDATE</th>
+		</tr>
+	</table>
+
+<br>
+	<table>
+		<caption>Trigger info</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="170">
+				<col width="170">
+				<col width="370">
+			</colgroup>
+			<th>No</th>
+			<th>Trigger Name</th>
+			<th>Event</th>
+			<th>Timing</th>
+			<th>Conditions</th>
+		</tr>
+	</table>
+
+
+	</body>
+</html>

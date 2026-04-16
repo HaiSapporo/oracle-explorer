@@ -1,0 +1,428 @@
+const DB_SCHEMA = [
+  {
+    "tableName": "public._prisma_migrations",
+    "logicalName": "",
+    "columns": [
+      {
+        "no": "1",
+        "logicalName": "",
+        "physicalName": "id",
+        "dataType": "character varying(36)",
+        "notNull": "Yes (PK)",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "2",
+        "logicalName": "",
+        "physicalName": "checksum",
+        "dataType": "character varying(64)",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "3",
+        "logicalName": "",
+        "physicalName": "finished_at",
+        "dataType": "timestamp(6) with time zone",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "4",
+        "logicalName": "",
+        "physicalName": "migration_name",
+        "dataType": "character varying(255)",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "5",
+        "logicalName": "",
+        "physicalName": "logs",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "6",
+        "logicalName": "",
+        "physicalName": "rolled_back_at",
+        "dataType": "timestamp(6) with time zone",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "7",
+        "logicalName": "",
+        "physicalName": "started_at",
+        "dataType": "timestamp(6) with time zone",
+        "notNull": "Yes",
+        "default": "now()",
+        "remark": ""
+      },
+      {
+        "no": "8",
+        "logicalName": "",
+        "physicalName": "applied_steps_count",
+        "dataType": "integer",
+        "notNull": "Yes",
+        "default": "0",
+        "remark": ""
+      }
+    ]
+  },
+  {
+    "tableName": "public.LoginHistory",
+    "logicalName": "",
+    "columns": [
+      {
+        "no": "1",
+        "logicalName": "",
+        "physicalName": "id",
+        "dataType": "text",
+        "notNull": "Yes (PK)",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "2",
+        "logicalName": "",
+        "physicalName": "userId",
+        "dataType": "text",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "3",
+        "logicalName": "",
+        "physicalName": "userAgent",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "4",
+        "logicalName": "",
+        "physicalName": "country",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "5",
+        "logicalName": "",
+        "physicalName": "loginAt",
+        "dataType": "timestamp(3) without time zone",
+        "notNull": "Yes",
+        "default": "CURRENT_TIMESTAMP",
+        "remark": ""
+      }
+    ]
+  },
+  {
+    "tableName": "public.Project",
+    "logicalName": "",
+    "columns": [
+      {
+        "no": "1",
+        "logicalName": "",
+        "physicalName": "id",
+        "dataType": "text",
+        "notNull": "Yes (PK)",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "2",
+        "logicalName": "",
+        "physicalName": "userId",
+        "dataType": "text",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "3",
+        "logicalName": "",
+        "physicalName": "title",
+        "dataType": "text",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "4",
+        "logicalName": "",
+        "physicalName": "videoPath",
+        "dataType": "text",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "5",
+        "logicalName": "",
+        "physicalName": "audioPath",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "6",
+        "logicalName": "",
+        "physicalName": "captionData",
+        "dataType": "text",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "7",
+        "logicalName": "",
+        "physicalName": "bookmarks",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "8",
+        "logicalName": "",
+        "physicalName": "duration",
+        "dataType": "integer",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "9",
+        "logicalName": "",
+        "physicalName": "thumbnailUrl",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "10",
+        "logicalName": "",
+        "physicalName": "createdAt",
+        "dataType": "timestamp(3) without time zone",
+        "notNull": "Yes",
+        "default": "CURRENT_TIMESTAMP",
+        "remark": ""
+      },
+      {
+        "no": "11",
+        "logicalName": "",
+        "physicalName": "updatedAt",
+        "dataType": "timestamp(3) without time zone",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      }
+    ]
+  },
+  {
+    "tableName": "public.TokenCode",
+    "logicalName": "",
+    "columns": [
+      {
+        "no": "1",
+        "logicalName": "",
+        "physicalName": "id",
+        "dataType": "text",
+        "notNull": "Yes (PK)",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "2",
+        "logicalName": "",
+        "physicalName": "code",
+        "dataType": "text",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "3",
+        "logicalName": "",
+        "physicalName": "amount",
+        "dataType": "integer",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "4",
+        "logicalName": "",
+        "physicalName": "isRedeemed",
+        "dataType": "boolean",
+        "notNull": "Yes",
+        "default": "false",
+        "remark": ""
+      },
+      {
+        "no": "5",
+        "logicalName": "",
+        "physicalName": "redeemedBy",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "6",
+        "logicalName": "",
+        "physicalName": "redeemedAt",
+        "dataType": "timestamp(3) without time zone",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "7",
+        "logicalName": "",
+        "physicalName": "createdAt",
+        "dataType": "timestamp(3) without time zone",
+        "notNull": "Yes",
+        "default": "CURRENT_TIMESTAMP",
+        "remark": ""
+      }
+    ]
+  },
+  {
+    "tableName": "public.User",
+    "logicalName": "",
+    "columns": [
+      {
+        "no": "1",
+        "logicalName": "",
+        "physicalName": "id",
+        "dataType": "text",
+        "notNull": "Yes (PK)",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "2",
+        "logicalName": "",
+        "physicalName": "email",
+        "dataType": "text",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "3",
+        "logicalName": "",
+        "physicalName": "passwordHash",
+        "dataType": "text",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "4",
+        "logicalName": "",
+        "physicalName": "tokenBalance",
+        "dataType": "integer",
+        "notNull": "Yes",
+        "default": "0",
+        "remark": ""
+      },
+      {
+        "no": "5",
+        "logicalName": "",
+        "physicalName": "tier",
+        "dataType": "UserTier",
+        "notNull": "Yes",
+        "default": "'FREE'",
+        "remark": ""
+      },
+      {
+        "no": "6",
+        "logicalName": "",
+        "physicalName": "subscriptionExpiresAt",
+        "dataType": "timestamp(3) without time zone",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "7",
+        "logicalName": "",
+        "physicalName": "fullName",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "8",
+        "logicalName": "",
+        "physicalName": "avatarUrl",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "9",
+        "logicalName": "",
+        "physicalName": "countryCode",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "10",
+        "logicalName": "",
+        "physicalName": "countryName",
+        "dataType": "text",
+        "notNull": "",
+        "default": "",
+        "remark": ""
+      },
+      {
+        "no": "11",
+        "logicalName": "",
+        "physicalName": "isAdmin",
+        "dataType": "boolean",
+        "notNull": "Yes",
+        "default": "false",
+        "remark": ""
+      },
+      {
+        "no": "12",
+        "logicalName": "",
+        "physicalName": "createdAt",
+        "dataType": "timestamp(3) without time zone",
+        "notNull": "Yes",
+        "default": "CURRENT_TIMESTAMP",
+        "remark": ""
+      },
+      {
+        "no": "13",
+        "logicalName": "",
+        "physicalName": "updatedAt",
+        "dataType": "timestamp(3) without time zone",
+        "notNull": "Yes",
+        "default": "",
+        "remark": ""
+      }
+    ]
+  }
+];

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データベース詳細検索 - Antigravity</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+    
+    <!-- Global Navigation -->
+    <nav class="global-nav glass-panel">
+        <div class="nav-brand" id="navBrandLogo" style="cursor: pointer;" title="ホームに戻る">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="brand-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>DB Explorer</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-tab active" data-target="view-search">データベース検索</button>
+            <button class="nav-tab" data-target="view-history">更新履歴</button>
+            <button class="nav-tab" data-target="view-docs">使い方・デプロイ</button>
+            <button class="nav-tab" data-target="view-about">アプリについて</button>
+        </div>
+    </nav>
+
+    <div class="app-container">
+        <!-- Sidebar: Tree View -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>DBエクスプローラー</h2>
+                <div class="db-stats" id="dbStats">0 テーブル</div>
+            </div>
+            
+            <div class="tree-container" id="treeView">
+                <!-- Tree items will be dynamically injected here -->
+            </div>
+            
+            <!-- Sidebar Pagination -->
+            <div class="sidebar-pagination" id="treePagination">
+                <button class="page-btn" id="prevPageBtn" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <span id="pageInfo">1 / 1</span>
+                <button class="page-btn" id="nextPageBtn" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- ====== VIEW: SEARCH ====== -->
+            <div id="view-search" class="view-section active">
+                <!-- Search Header - Fixed -->
+                <header class="search-header glass-panel">
+                    <div class="header-top-row">
+                        <div class="search-wrapper">
+                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="searchInput" placeholder="テーブル、フィールド、備考を検索... (例: 'User')" autocomplete="off" autofocus>
+                            <button id="clearSearchBtn" class="clear-btn" style="display: none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="header-bottom-row">
+                        <div class="filter-section">
+                            <div class="filter-group">
+                                <span class="filter-label">対象:</span>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="chkTable" checked>
+                                    <span class="checkbox-custom">テーブル</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="chkField" checked>
+                                    <span class="checkbox-custom">フィールド</span>
+                                </label>
+                            </div>
+                            <div class="filter-group delimiter"></div>
+                            <div class="filter-group">
+                                <span class="filter-label">項目:</span>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="chkPhysical" checked>
+                                    <span class="checkbox-custom">物理名 (Physical)</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="chkLogical" checked>
+                                    <span class="checkbox-custom">論理名 (Logical)</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="chkRemark" checked>
+                                    <span class="checkbox-custom">備考 (Remark)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Theme Toggle -->
+                        <button class="theme-toggle" id="themeToggleBtn" title="テーマ切り替え">
+                            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="content-scroll">
+                    <div class="empty-state" id="emptyState">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        <h3>データがありません</h3>
+                        <p>左側のリストからテーブルを選択するか、検索バーを使用して情報を検索します。</p>
+                    </div>
+
+                    <div id="tableView" style="display: none;">
+                        <div class="table-header">
+                            <h1 id="tvTitle">Table Name</h1>
+                            <p class="table-meta" id="tvLogicalName">Logical Name</p>
+                        </div>
+                        
+                        <div class="data-table-container glass-panel">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th width="40">No.</th>
+                                        <th>物理名 (Physical)</th>
+                                        <th>論理名 (Logical)</th>
+                                        <th width="180">データ型 (Type)</th>
+                                        <th width="100">必須</th>
+                                        <th width="100">デフォルト</th>
+                                        <th>備考 (Remark)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tvBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="searchResults" style="display: none;">
+                        <h2 class="results-title"><span id="searchKw" class="highlight-kw"></span> の検索結果 (<span id="searchCount">0</span>件)</h2>
+                        <div class="results-list" id="srList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== VIEW: HISTORY ====== -->
+            <div id="view-history" class="view-section" style="display: none;">
+                <div class="static-page-header">
+                    <h1>更新履歴 (History)</h1>
+                    <p>システムの変更履歴と新機能について</p>
+                </div>
+                <div class="content-scroll page-content">
+                    <div class="data-table-container glass-panel">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th width="120">バージョン</th>
+                                    <th width="150">更新日</th>
+                                    <th>更新内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge">v1.2.0</span></td>
+                                    <td>2026-04-16</td>
+                                    <td>
+                                        <ul style="padding-left: 20px; margin: 0;">
+                                            <li>グローバルナビゲーションメニューの追加 (検索、更新履歴、アプリについて)。</li>
+                                            <li>完全な日本語化対応。</li>
+                                            <li>検索フィルタのUIをチェックボックス制に改修し、物理名・論理名などを細かく絞り込めるように強化。</li>
+                                            <li>builder.htmlを導入し、完全ブラウザ内での <code>data.txt</code> 出力機能を追加。</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge">v1.1.0</span></td>
+                                    <td>2026-04-16</td>
+                                    <td>
+                                        <ul style="padding-left: 20px; margin: 0;">
+                                            <li>ダークモードとライトモードの切り替え機能を追加（設定はブラウザに保存されます）。</li>
+                                            <li>テーブル一覧（サイドバー）のページネーション機能を実装（1ページあたり30件までに最適化）。</li>
+                                            <li>ヘッダーとフッターのレイアウトを固定化し、スクロール時の視認性を向上。</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge">v1.0.0</span></td>
+                                    <td>2026-04-16</td>
+                                    <td>
+                                        <ul style="padding-left: 20px; margin: 0;">
+                                            <li>Pure HTML/JS/CSS による超高速ローカルデータベースエクスプローラーを初期リリース。</li>
+                                            <li>リアルタイムのフルテキスト検索機能・ハイライト機能を追加。</li>
+                                            <li>200個以上の大量テーブルの快適な表示と絞り込みに対応開始。</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== VIEW: DOCS ====== -->
+            <div id="view-docs" class="view-section" style="display: none;">
+                <div class="static-page-header">
+                    <h1>使い方・デプロイ (Manual & Deploy)</h1>
+                    <p>データ更新ツール (builder.html) の手順と IIS (Internet Information Services) へのデプロイ方法</p>
+                </div>
+                <div class="content-scroll page-content">
+                    
+                    <div class="about-card glass-panel" style="margin-bottom: 24px;">
+                        <h2>1. データ更新手順 (builder.html の使い方)</h2>
+                        <p>テーブル構造に変更があった場合、Pythonを使わず、ブラウザのみで最新の辞書データ (data.txt) に更新する手順です。</p>
+                        
+                        <ul class="feature-list" style="margin-top: 16px;">
+                            <li>
+                                <div class="f-icon" style="color: var(--accent-hover);">1</div>
+                                <div><strong>HTMLのエクスポート:</strong> DBツール (A5:M2など) を使い、最新のテーブル定義書HTMLを出力し、このフォルダ内の <code>tables</code> フォルダの中に保存（上書き）します。</div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: var(--accent-hover);">2</div>
+                                <div><strong>builder.html を開く:</strong> このフォルダにある <code>builder.html</code> をダブルクリックしてブラウザで開きます。</div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: var(--accent-hover);">3</div>
+                                <div><strong>フォルダを選択:</strong> 画面中央のアップロード枠をクリックし、ダイアログから <code>tables</code> フォルダを選択します。（「アップロードしますか？」の警告には「はい」を選びます）。</div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: var(--accent-hover);">4</div>
+                                <div><strong>自動ダウンロード:</strong> ブラウザが1秒以内で全解析を行い、自動的に新しい <code>data.txt</code> ファイルをダウンロードします。</div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: var(--accent-hover);">5</div>
+                                <div><strong>上書き適用:</strong> ダウンロードした最新の <code>data.txt</code> を、このフォルダにコピーして古いファイルを「上書き（Replace）」してください。その後、index.htmlを再読み込み (F5) すると最新のDBが反映されます。</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="about-card glass-panel">
+                        <h2>2. IIS へのデプロイ (サーバー公開) 手順</h2>
+                        <p>組織内の既存 Windows Server (IIS) を活用して、チームの全員がブラウザからこのツールにアクセスできるようにする設定手順です。</p>
+                        
+                        <ul class="feature-list" style="margin-top: 16px;">
+                            <li>
+                                <div class="f-icon" style="color: #10b981;">1</div>
+                                <div><strong>フォルダの配置:</strong> この <code>search-database</code> フォルダ全体を、サーバー内の適切な場所 (例: <code>C:\inetpub\wwwroot\search-database</code>) にコピーします。</div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: #10b981;">2</div>
+                                <div><strong>IISマネージャーの起動:</strong> Windows Server で <code>inetmgr</code> (インターネット インフォメーション サービス (IIS) マネージャー) を起動します。</div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: #10b981;">3</div>
+                                <div><strong>Webサイト/アプリケーションの追加:</strong>
+                                 左のツリーから [サイト] を右クリックし、[Web サイトの追加] または既存サイト内に [アプリケーションの追加] を選びます。<br>
+                                 ・エイリアス名/サイト名: 例 <code>db-explorer</code><br>
+                                 ・物理パス: ステップ1で配置したコピー先フォルダを指定します。
+                                </div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: #10b981;">4</div>
+                                <div><strong>既定のドキュメント (Default Document) の確認:</strong>
+                                 IISの設定で「既定のドキュメント」を開き、<code>index.html</code> (リネーム済みの検索トップページ) がリストの上位にあるか確認します。
+                                </div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: #10b981;">5</div>
+                                <div><strong>MIME タイプ (MIME Types) の確認:</strong>
+                                 IISに <code>.txt</code> 拡張子が設定されているか確認します。<br>
+                                 ・拡張子: <code>.txt</code><br>
+                                 ・MIME の種類: <code>text/plain</code><br>
+                                 <em>※ デフォルトで登録されていますが、万が一除外されていると data.txt がロードエラーになります。</em>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="f-icon" style="color: #10b981;">6</div>
+                                <div><strong>接続テスト:</strong>
+                                 サーバーへのローカルネットワーク内でブラウザを開き、<code>http://(サーバーのIP)>または設定したドメイン/</code> へアクセスし、ツールが表示されて全検索が高速動作すれば成功です。
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ====== VIEW: ABOUT ====== -->
+            <div id="view-about" class="view-section" style="display: none;">
+                <div class="static-page-header">
+                    <h1>アプリについて (About)</h1>
+                    <p>データベース開発者のための高速テーブル辞書ツール</p>
+                </div>
+                <div class="content-scroll page-content">
+                    <div class="about-card glass-panel">
+                        <h2>アプリの概要</h2>
+                        <p>本ツールは、HTMLで書き出されたデータベース設計図（テーブル定義書）を束ね、超高速で必要なフィールドやテーブル構造へアクセスするために開発された、<strong>100% オフライン動作</strong> のSPA（シングルページアプリケーション）です。</p>
+                        <p>セキュリティの高い業務環境で利用されることを想定し、外部ライブラリ（React, jQuery等）や外部フォントを一切ロードせず、ローカルのネイティブな実行スピードを最大限に引き出す設計となっています。</p>
+                        
+                        <h2 style="margin-top: 32px;">主な目的・機能</h2>
+                        <ul class="feature-list">
+                            <li>
+                                <div class="f-icon">⚡</div>
+                                <div><strong>テーブル構造の迅速な検索:</strong> 200テーブル以上が含まれる大規模なDBでも、物理名・論理名・備考から一瞬で目的のテーブルを探し出せます。</div>
+                            </li>
+                            <li>
+                                <div class="f-icon">🔍</div>
+                                <div><strong>クロス・テーブル分析:</strong> 複数テーブルにまたがる同一・類似フィールド（例: createdAt, updatedBy などの共通カラム）を即座に特定し、命名規則の揺らぎを発見できます。</div>
+                            </li>
+                            <li>
+                                <div class="f-icon">📏</div>
+                                <div><strong>フィールド型やデータ長の確認:</strong> バックエンドやフロントエンドの開発中に「この変数の桁数はいくつか？」「必須（NOT NULL）かどうか？」を瞬時にチェックできます。</div>
+                            </li>
+                        </ul>
+
+                        <hr class="divider">
+
+                        <div class="author-info">
+                            <h3>開発情報</h3>
+                            <p><strong>作成・設計:</strong> Antigravity / PHAN HAI</p>
+                            <p><strong>ライセンス:</strong> 内部利用向け専用設計</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 16px;">
+                                ※ 新しい仕様書（テーブル情報）を取り込む場合は、同一ディレクトリにある <code>builder.html</code> をご利用ください。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer - Fixed -->
+            <footer class="app-footer glass-panel">
+                <div class="footer-content">
+                    <span>データソース: <strong id="footerDbCount">0</strong> テーブルロード済み</span>
+                    <span>Database Explorer 1.2.0</span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- DB Schema Data -->
+    <script src="data.txt"></script>
+    <script src="app.js"></script>
+</body>
+</html>
